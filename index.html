@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض المنشور من فيسبوك</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+        .content {
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>عرض منشور فيسبوك</h1>
+    <div class="content" id="facebook-post">
+        <p>جاري تحميل البيانات...</p>
+    </div>
+
+    <script>
+        // هنا ضع الـ Access Token الخاص بك
+        const accessToken = "EAAH8Gy0JBcABO1cj4TtTA64j4bG0MTy2DZAdUZAPgP7xqTtJzeMR4QYu4wzZAKwC9d9ih6RsBZAhZBpU5x4dsS2zOpe3yLAqFcEfSQ2iUgL7mkiKbz7QICiT0wXGwH737q1xiC4pTYAAEZAZCZCs5FZAy0mdU9ZCzsZAvzNPoAYoDWEcDVwWuxjTCzNCmMuAHVN";
+        // ضع هنا الـ Page ID والـ Post ID
+        const pageId = "61574052104648"; // ID الصفحة
+        const postId = "122124761834801736"; // ID المنشور
+
+        // إعداد رابط API لجلب المنشور
+        const apiUrl = `https://graph.facebook.com/v12.0/${pageId}_${postId}?access_token=${accessToken}`;
+
+        // جلب البيانات باستخدام Fetch API
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // إذا تم جلب البيانات بنجاح
+                if (data.message) {
+                    // عرض الرسالة في الصفحة
+                    document.getElementById("facebook-post").innerHTML = `<h3>المنشور:</h3><p>${data.message}</p>`;
+                } else {
+                    // في حالة عدم وجود رسالة
+                    document.getElementById("facebook-post").innerHTML = `<p>المنشور لا يحتوي على رسالة.</p>`;
+                }
+            })
+            .catch(error => {
+                // في حالة حدوث خطأ
+                document.getElementById("facebook-post").innerHTML = `<p>حدث خطأ أثناء تحميل البيانات: ${error}</p>`;
+            });
+    </script>
+</body>
+</html>
